@@ -1,0 +1,13 @@
+{
+  "name": "parag-dataforge",
+  "version": "0.1.0",
+  "description": "A lightweight JavaScript package for generating realistic and relationally consistent test data",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs"
+}
