@@ -15,19 +15,37 @@ const {
   generateUsers,
   generateProducts,
   generateOrders,
+  createDataForge,
   exportToJSON,
   exportToCSV
 } = require('parag-dataforge');
 ```
 
+## Seeded generation
+
+Use `createDataForge({ seed })` to create an independent generator instance. Seeds can be finite numbers or non-empty strings:
+
+```js
+const numericForge = createDataForge({ seed: 12345 });
+const stringForge = createDataForge({ seed: 'checkout-fixture' });
+
+const users = numericForge.generateUsers(10);
+const products = numericForge.generateProducts(8);
+const orders = numericForge.generateOrders(12, users, products);
+```
+
+An instance owns its random state. Separate instances initialized with the same seed produce the same data when given the same arguments in the same sequence. Calls on one instance advance its stream and do not affect another instance. Reproducibility applies when the generator implementation and call sequence are unchanged.
+
 ## Generate data
 
-Each generator takes a non-negative integer count and returns an array. Random values use JavaScript's `Math.random()`, so results vary between calls.
+The direct generator functions remain available for convenience. Each takes a non-negative integer count and returns an array. Direct calls use JavaScript's `Math.random()` and are not seeded or reproducible:
 
 ```js
 const users = generateUsers(10);
 const products = generateProducts(8);
 ```
+
+For reproducible data, use the corresponding methods on a `createDataForge` instance.
 
 Users contain `id`, `firstName`, `lastName`, `fullName`, `email`, and `age`. Products contain `id`, `name`, `category`, `price`, `stock`, and `sku`.
 

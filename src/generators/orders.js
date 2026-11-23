@@ -5,7 +5,7 @@
  * @param {Array<object>} products Existing products that orders can contain.
  * @returns {{id: string, userId: string, items: {productId: string, quantity: number}[], total: number}[]}
  */
-function generateOrders(count, users, products) {
+function generateOrders(count, users, products, random = Math.random) {
   if (!Number.isInteger(count) || count < 0) {
     throw new TypeError('count must be a non-negative integer.');
   }
@@ -51,12 +51,12 @@ function generateOrders(count, users, products) {
   const orders = [];
 
   for (let index = 0; index < count; index += 1) {
-    const user = users[Math.floor(Math.random() * users.length)];
+    const user = users[Math.floor(random() * users.length)];
     const shuffledProducts = uniqueProducts.slice();
 
     // Shuffle a copy so this order can select distinct products.
     for (let position = shuffledProducts.length - 1; position > 0; position -= 1) {
-      const swapIndex = Math.floor(Math.random() * (position + 1));
+      const swapIndex = Math.floor(random() * (position + 1));
       [shuffledProducts[position], shuffledProducts[swapIndex]] = [
         shuffledProducts[swapIndex],
         shuffledProducts[position]
@@ -64,13 +64,13 @@ function generateOrders(count, users, products) {
     }
 
     const maxItems = Math.min(3, shuffledProducts.length);
-    const itemCount = Math.floor(Math.random() * maxItems) + 1;
+    const itemCount = Math.floor(random() * maxItems) + 1;
     const items = [];
 
     for (let itemIndex = 0; itemIndex < itemCount; itemIndex += 1) {
       items.push({
         productId: shuffledProducts[itemIndex].id,
-        quantity: Math.floor(Math.random() * 5) + 1
+        quantity: Math.floor(random() * 5) + 1
       });
     }
 

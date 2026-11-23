@@ -35,7 +35,7 @@ const categories = Object.keys(productsByCategory);
  * @param {number} count Number of products to generate.
  * @returns {{id: string, name: string, category: string, price: number, stock: number, sku: string}[]}
  */
-function generateProducts(count) {
+function generateProducts(count, random = Math.random) {
   if (!Number.isInteger(count) || count < 0) {
     throw new TypeError('count must be a non-negative integer.');
   }
@@ -46,9 +46,9 @@ function generateProducts(count) {
     // Rotate through categories so larger datasets include each category.
     const category = categories[index % categories.length];
     const categoryProducts = productsByCategory[category];
-    const product = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
+    const product = categoryProducts[Math.floor(random() * categoryProducts.length)];
     const priceInCents = Math.floor(
-      Math.random() * ((product.maxPrice - product.minPrice) * 100 + 1)
+      random() * ((product.maxPrice - product.minPrice) * 100 + 1)
     ) + product.minPrice * 100;
 
     products.push({
@@ -56,7 +56,7 @@ function generateProducts(count) {
       name: product.name,
       category,
       price: priceInCents / 100,
-      stock: Math.floor(Math.random() * 501),
+      stock: Math.floor(random() * 501),
       sku: `${categoryPrefixes[category]}-${String(index + 1).padStart(4, '0')}`
     });
   }
