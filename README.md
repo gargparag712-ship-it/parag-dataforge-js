@@ -36,6 +36,27 @@ const orders = numericForge.generateOrders(12, users, products);
 
 An instance owns its random state. Separate instances initialized with the same seed produce the same data when given the same arguments in the same sequence. Calls on one instance advance its stream and do not affect another instance. Reproducibility applies when the generator implementation and call sequence are unchanged.
 
+## Generate a complete relational dataset
+
+`generateDataset` creates users first, products second, and orders last, using the same seeded instance for every collection:
+
+```js
+const forge = createDataForge({ seed: 12345 });
+const dataset = forge.generateDataset({
+  users: 10,
+  products: 20,
+  orders: 30
+});
+
+const users = dataset.users;
+const products = dataset.products;
+const orders = dataset.orders;
+```
+
+Every generated order references a user in `dataset.users`; each order item references a product in `dataset.products`. Product references within an order are distinct, and totals are calculated from the referenced products and item quantities. Each collection's IDs are unique within that collection.
+
+Two independent instances with the same seed and identical `generateDataset` arguments produce deeply equal datasets. Calling `generateDataset` advances that instance's random stream; it does not reset the seed. Counts default to zero when omitted, so `forge.generateDataset({})` returns `{ users: [], products: [], orders: [] }`. Counts must be non-negative integers, and a positive order count requires at least one user and one product.
+
 ## Generate data
 
 The direct generator functions remain available for convenience. Each takes a non-negative integer count and returns an array. Direct calls use JavaScript's `Math.random()` and are not seeded or reproducible:
