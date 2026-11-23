@@ -1,4 +1,4 @@
-cat package.json# parag-dataforge
+# parag-dataforge
 
 `parag-dataforge` is a lightweight JavaScript library for creating realistic dummy data for development and testing. It is intended to provide user and product data, along with orders that stay consistent with related records.
 
